@@ -2,7 +2,7 @@
 add_action('admin_enqueue_scripts', function($hook) {
     if ($hook === 'post-new.php' || $hook === 'post.php') {
         global $post;
-        if ($post->post_type === 'bg_slideshow') {
+        if ($post->post_type === 'fybs_slideshow') {
             wp_enqueue_style('fybs-backend', plugin_dir_url(__DIR__) . 'style.css');
             wp_enqueue_media(); // <-- nécessaire pour la médiathèque
             wp_enqueue_script('jquery-ui-sortable'); // <-- nécessaire pour le tri des images
@@ -11,7 +11,7 @@ add_action('admin_enqueue_scripts', function($hook) {
 });
 
 add_action('add_meta_boxes', function() {
-    add_meta_box('fybs_metabox', 'Paramètres du diaporama', 'fybs_render_metabox', 'bg_slideshow', 'normal', 'default');
+    add_meta_box('fybs_metabox', esc_html__('Slideshow settings', 'fybs'), 'fybs_render_metabox', 'fybs_slideshow', 'normal', 'default');
 });
 
 function fybs_render_metabox($post) {
@@ -21,21 +21,19 @@ function fybs_render_metabox($post) {
     $duration = get_post_meta($post->ID, '_fybs_duration', true);
     wp_nonce_field('fybs_save_metabox', 'fybs_nonce');
     ?>
-    <p><label>Classe CSS cible :</label><br>
+    <p><label><?php esc_html_e('Target CSS class:', 'fybs'); ?></label><br>
     <input type="text" name="fybs_class" value="<?php echo esc_attr($class); ?>" style="width:100%;" /></p>
     
-    <p><label>Images du diaporama :</label><br>
+    <p><label><?php esc_html_e('Slideshow pictures:', 'fybs'); ?></label><br>
     <input type="hidden" name="fybs_images" id="fybs_images" value="<?php echo esc_attr($images); ?>" />
-    <button type="button" class="button" id="fybs_select_images">Choisir des images</button>
+    <button type="button" class="button" id="fybs_select_images"><?php esc_html_e('Choose pictures:', 'fybs'); ?></button>
     <div id="fybs_preview" style="margin-top:10px; padding:10px; border:1px solid #ddd; min-height:100px;">
         <!-- Les images seront insérées ici -->
     </div></p>
 
-    <p><label>Effet de transition :</label><br>
+    <p><label><?php esc_html_e('Transition:', 'fybs'); ?></label><br>
     <select name="fybs_transition">
-        <option value="fade" <?php selected($transition, 'fade'); ?>>Fondu</option>
-        <option value="slide-left" <?php selected($transition, 'slide-left'); ?>>Glissement gauche</option>
-        <option value="slide-top" <?php selected($transition, 'slide-top'); ?>>Glissement haut</option>
+        <option value="fade" <?php selected($transition, 'fade'); ?>><?php esc_html_e('Fade', 'fybs'); ?></option>
     </select></p>
 
     <p><label>Durée entre chaque image (en ms) :</label><br>
@@ -85,10 +83,10 @@ function fybs_render_metabox($post) {
             e.preventDefault();
             if (frame) { frame.open(); return; }
             frame = wp.media({
-                title: 'Choisir des images',
+                title: '<?php esc_html_e('Choose pictures', 'fybs'); ?>',
                 multiple: true,
                 library: { type: 'image' },
-                button: { text: 'Utiliser ces images' }
+                button: { text: '<?php esc_html_e('Use these pictures', 'fybs'); ?>' }
             });
             frame.on('select', function() {
                 const attachments = frame.state().get('selection').toJSON();

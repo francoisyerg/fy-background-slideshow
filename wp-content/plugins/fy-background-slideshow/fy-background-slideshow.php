@@ -11,6 +11,15 @@ Text Domain: fybs
 Domain Path: /languages
 */
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
+
+// Load plugin text domain for translations
+add_action('plugins_loaded', function() {
+    load_plugin_textdomain('fybs', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
+
 // CPT pour les diaporamas
 require_once plugin_dir_path(__FILE__) . 'includes/metaboxes.php';
 require_once plugin_dir_path(__FILE__) . 'includes/output.php';
@@ -23,12 +32,12 @@ add_action('wp_enqueue_scripts', function() {
 // Register Custom Post Type for Slideshows
 add_action('init', function() {
     $labels = array(
-        'name' => 'Diaporamas',
-        'singular_name' => 'Diaporama',
-        'menu_name' => 'Diaporamas',
+        'name' => esc_html__('Slideshows', 'fybs'),
+        'singular_name' => esc_html__('Slideshow', 'fybs'),
+        'menu_name' => esc_html__('Background slideshows', 'fybs'),
     );
     $args = array(
-        'label' => 'Diaporama',
+        'label' => esc_html__('Slideshow', 'fybs'),
         'labels' => $labels,
         'public' => false,
         'show_ui' => true,
@@ -38,7 +47,6 @@ add_action('init', function() {
     );
     register_post_type('fybs_slideshow', $args);
 });
-
 
 add_action('wp_footer', function() {
     $slideshows = get_posts([
