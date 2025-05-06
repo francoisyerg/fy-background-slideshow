@@ -1,0 +1,9 @@
+# Ignore everything in the repository
+*
+
+# Include the following directories and files
+!.gitignore
+!wp-content/
+!wp-content/plugins/
+!wp-content/plugins/fy-background-slideshow/
+!wp-content/plugins/fy-background-slideshow/**

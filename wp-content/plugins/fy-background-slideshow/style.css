@@ -1,0 +1,39 @@
+#fybs_preview {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  min-height: 100px;
+  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
+.fybs-image-item {
+  flex: 0 0 auto;
+  position: relative;
+  cursor: grab;
+}
+
+.fybs-image-item img {
+  max-height: 100px;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.fybs-delete {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2px 5px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#fybs_preview.sortable-active .fybs-image-item {
+  transition: transform 0.1s ease;
+}
